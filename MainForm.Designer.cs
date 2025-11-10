@@ -53,9 +53,9 @@
             // 
             // btnPlay
             // 
-            this.btnPlay.Location = new System.Drawing.Point(446, 514);
+            this.btnPlay.Location = new System.Drawing.Point(457, 513);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(75, 23);
+            this.btnPlay.Size = new System.Drawing.Size(75, 28);
             this.btnPlay.TabIndex = 0;
             this.btnPlay.Text = "▶";
             this.btnPlay.UseVisualStyleBackColor = true;
@@ -68,7 +68,7 @@
             this.lstSongs.ItemHeight = 16;
             this.lstSongs.Location = new System.Drawing.Point(0, 0);
             this.lstSongs.Name = "lstSongs";
-            this.lstSongs.Size = new System.Drawing.Size(250, 553);
+            this.lstSongs.Size = new System.Drawing.Size(251, 553);
             this.lstSongs.TabIndex = 1;
             // 
             // lblTitle
@@ -95,7 +95,7 @@
             // trkVolume
             // 
             this.trkVolume.LargeChange = 10;
-            this.trkVolume.Location = new System.Drawing.Point(673, 485);
+            this.trkVolume.Location = new System.Drawing.Point(684, 489);
             this.trkVolume.Maximum = 100;
             this.trkVolume.Name = "trkVolume";
             this.trkVolume.Size = new System.Drawing.Size(97, 56);
@@ -115,9 +115,9 @@
             // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(446, 485);
+            this.btnPause.Location = new System.Drawing.Point(457, 484);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(75, 23);
+            this.btnPause.Size = new System.Drawing.Size(75, 28);
             this.btnPause.TabIndex = 0;
             this.btnPause.Text = "⏸";
             this.btnPause.UseVisualStyleBackColor = true;
@@ -125,9 +125,9 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(284, 485);
+            this.btnStop.Location = new System.Drawing.Point(295, 484);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStop.Size = new System.Drawing.Size(75, 28);
             this.btnStop.TabIndex = 0;
             this.btnStop.Text = "■";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -135,9 +135,9 @@
             // 
             // btnPrevious
             // 
-            this.btnPrevious.Location = new System.Drawing.Point(365, 485);
+            this.btnPrevious.Location = new System.Drawing.Point(376, 484);
             this.btnPrevious.Name = "btnPrevious";
-            this.btnPrevious.Size = new System.Drawing.Size(75, 23);
+            this.btnPrevious.Size = new System.Drawing.Size(75, 28);
             this.btnPrevious.TabIndex = 0;
             this.btnPrevious.Text = "◀";
             this.btnPrevious.UseVisualStyleBackColor = true;
@@ -165,9 +165,9 @@
             // 
             // btnNext
             // 
-            this.btnNext.Location = new System.Drawing.Point(527, 485);
+            this.btnNext.Location = new System.Drawing.Point(538, 484);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(75, 23);
+            this.btnNext.Size = new System.Drawing.Size(75, 28);
             this.btnNext.TabIndex = 0;
             this.btnNext.Text = "▶";
             this.btnNext.UseVisualStyleBackColor = true;
@@ -175,12 +175,13 @@
             // 
             // btnMute
             // 
-            this.btnMute.Location = new System.Drawing.Point(608, 485);
+            this.btnMute.Location = new System.Drawing.Point(619, 484);
             this.btnMute.Name = "btnMute";
-            this.btnMute.Size = new System.Drawing.Size(75, 23);
+            this.btnMute.Size = new System.Drawing.Size(75, 28);
             this.btnMute.TabIndex = 5;
             this.btnMute.Text = "🔇";
             this.btnMute.UseVisualStyleBackColor = true;
+            this.btnMute.Click += new System.EventHandler(this.btnMute_Click);
             // 
             // txtSearch
             // 

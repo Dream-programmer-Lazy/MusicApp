@@ -11,7 +11,7 @@ namespace MusicApp
     {
         // 🔒 Chuỗi kết nối đến SQL Server
         // 💡 Đảm bảo bạn đã tạo CSDL tên là "MusicPlayerDB"
-        private string connectionString = @"Server=.\SQLEXPRESS;Database=MusicPlayerDB;Trusted_Connection=true;";
+        private string connectionString = @"Data Source=LAPTOP-6505U094;Initial Catalog=MusicPlayerDB;Integrated Security=True;";
 
         // 📥 Lấy toàn bộ bài hát
         public List<Song> GetAllSongs()
@@ -105,6 +105,38 @@ namespace MusicApp
                 }
             }
             return songs;
+        }
+
+        public Song GetSongByFilePath(string filePath)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT * FROM Song WHERE FilePath = @FilePath";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@FilePath", filePath);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Song
+                            {
+                                SongID = Convert.ToInt32(reader["SongID"]),
+                                Title = reader["Title"].ToString(),
+                                Artist = reader["Artist"].ToString(),
+                                Album = reader["Album"] as string ?? "",
+                                Genre = reader["Genre"] as string ?? "",
+                                Duration = reader["Duration"] is DBNull ? 0 : Convert.ToInt32(reader["Duration"]),
+                                FilePath = reader["FilePath"].ToString(),
+                                Lyrics = reader["Lyrics"] as string ?? "",
+                                ReleaseYear = reader["ReleaseYear"] is DBNull ? 0 : Convert.ToInt32(reader["ReleaseYear"])
+                            };
+                        }
+                    }
+                }
+            }
+            return null; 
         }
     }
 }
