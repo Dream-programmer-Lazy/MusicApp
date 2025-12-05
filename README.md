@@ -12,6 +12,4 @@
 - `MusicPlayer/` – Source code WinForms
 - `Database/MusicApp.sql` – Cấu trúc & dữ liệu mẫu của CSDL
 
-## Tác giả
-- Sinh viên: Nguyễn Tuấn Đạt
-- Mã số sinh viên: 2274801030032
+
