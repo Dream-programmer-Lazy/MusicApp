@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,20 +15,19 @@ namespace MusicApp
     public partial class MainForm : Form
     {
         private const string PLACEHOLDER = "Tìm bài hát...";
+        private bool isMuted = false;
+        private int lastVolume = 80;
 
         public MainForm()
         {
-            InitializeComponent(); // GỌI MỘT LẦN DUY NHẤT
-
-            // Thiết lập ban đầu cho âm lượng
+            InitializeComponent();
             trkVolume.Value = 80;
             axWindowsMediaPlayer1.settings.volume = 80;
-
-            // Gắn sự kiện cho các control
             trkVolume.Scroll += TrkVolume_Scroll;
             SetupSearchBox();
-            LoadSongs();
+            LoadSongs(); 
         }
+
 
         private void SetupSearchBox()
         {
@@ -57,32 +57,39 @@ namespace MusicApp
 
         private void TrkVolume_Scroll(object sender, EventArgs e)
         {
-            axWindowsMediaPlayer1.settings.volume = trkVolume.Value;
+            int newVolume = trkVolume.Value;
+            axWindowsMediaPlayer1.settings.volume = newVolume;
+
+            if (newVolume > 0 && isMuted)
+            {
+                isMuted = false;
+                btnMute.Text = "🔊";
+            }
+            else if (newVolume == 0 && !isMuted)
+            {
+                isMuted = true;
+                btnMute.Text = "🔇";
+            }
         }
 
-        private bool isMuted = false; // Theo dõi trạng thái mute
-        private int lastVolume = 80;
         private void btnMute_Click(object sender, EventArgs e)
         {
             if (isMuted)
             {
-                // Bật lại âm thanh
                 axWindowsMediaPlayer1.settings.volume = lastVolume;
                 trkVolume.Value = lastVolume;
-                btnMute.Text = "🔊"; // Hoặc "Mute"
+                btnMute.Text = "🔊";
                 isMuted = false;
             }
             else
             {
-                // Tắt âm thanh
-                lastVolume = trkVolume.Value; // Lưu âm lượng hiện tại
+                lastVolume = trkVolume.Value;
                 axWindowsMediaPlayer1.settings.volume = 0;
                 trkVolume.Value = 0;
-                btnMute.Text = "🔇"; // Hoặc "Unmute"
+                btnMute.Text = "🔇";
                 isMuted = true;
             }
         }
-
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
@@ -109,6 +116,7 @@ namespace MusicApp
             axWindowsMediaPlayer1.URL = filePath;
             axWindowsMediaPlayer1.Ctlcontrols.play();
             DisplaySongInfo(filePath);
+            lstSongs.Focus();
         }
 
         private void btnPause_Click(object sender, EventArgs e)
@@ -123,23 +131,21 @@ namespace MusicApp
 
         private void btnPrevious_Click(object sender, EventArgs e)
         {
-            // Sẽ implement sau khi có danh sách bài hát
             int currentIndex = lstSongs.SelectedIndex;
             if (currentIndex > 0)
             {
                 lstSongs.SelectedIndex = currentIndex - 1;
-                btnPlay_Click(null, EventArgs.Empty); // Phát bài trước
+                btnPlay_Click(null, EventArgs.Empty);
             }
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            // Sẽ implement sau khi có danh sách bài hát
             int currentIndex = lstSongs.SelectedIndex;
             if (currentIndex >= 0 && currentIndex < lstSongs.Items.Count - 1)
             {
                 lstSongs.SelectedIndex = currentIndex + 1;
-                btnPlay_Click(null, EventArgs.Empty); // Phát bài tiếp
+                btnPlay_Click(null, EventArgs.Empty);
             }
         }
 
@@ -158,11 +164,11 @@ namespace MusicApp
                     lblDuration.Text = song.Duration > 0
                         ? $"Thời lượng: {TimeSpan.FromSeconds(song.Duration):mm\\:ss}"
                         : "Thời lượng: N/A";
-                    txtLyrics.Text = song.Lyrics; // ← Hiển thị LỜI BÀI HÁT
+                    txtLyrics.Text = song.Lyrics; 
                 }
                 else
                 {
-                    // Xóa thông tin nếu không tìm thấy
+
                     lblTitle.Text = "[Bài hát không có trong CSDL]";
                     lblArtist.Text = lblGenre.Text = lblDuration.Text = "";
                     txtLyrics.Text = "";
@@ -183,9 +189,8 @@ namespace MusicApp
                 {
                     try
                     {
-                        // Tính thời lượng (tạm để 0 nếu chưa lấy được)
-                        int duration = 0; // Có thể dùng WMPLib để lấy sau
 
+                        int duration = 0;
                         Song song = new Song
                         {
                             Title = addForm.Title,
@@ -200,7 +205,7 @@ namespace MusicApp
                         SongDAL dal = new SongDAL();
                         dal.AddSong(song);
 
-                        LoadSongs(); // Tải lại danh sách
+                        LoadSongs(); 
                         MessageBox.Show("Đã thêm bài hát thành công!");
                     }
                     catch (Exception ex)
@@ -216,7 +221,7 @@ namespace MusicApp
             string keyword = txtSearch.Text.Trim();
             if (string.IsNullOrEmpty(keyword) || keyword == PLACEHOLDER)
             {
-                LoadSongs(); // Nếu không tìm, load toàn bộ
+                LoadSongs(); 
                 return;
             }
 
@@ -236,8 +241,6 @@ namespace MusicApp
             }
         }
 
-        // Hàm trợ giúp: trích xuất đường dẫn file từ item trong ListBox
-        // Giả sử item có dạng: "Tên - Ca sĩ | C:\Music\song.mp3"
         private string ExtractFilePath(string item)
         {
             int lastPipe = item.LastIndexOf(" | ");
@@ -245,10 +248,9 @@ namespace MusicApp
             {
                 return item.Substring(lastPipe + 3);
             }
-            return null; // Không phân tích được
+            return null; 
         }
 
-        // Hàm này bạn sẽ implement đầy đủ khi có lớp DAL/BLL
         private void LoadSongs()
         {
             try
@@ -270,6 +272,17 @@ namespace MusicApp
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi tải danh sách nhạc: " + ex.Message);
+            }
+        }
+        private void lstSongs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstSongs.SelectedItem != null)
+            {
+                string filePath = ExtractFilePath(lstSongs.SelectedItem.ToString());
+                if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+                {
+                    DisplaySongInfo(filePath);
+                }
             }
         }
 

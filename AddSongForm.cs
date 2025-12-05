@@ -43,7 +43,7 @@ namespace MusicApp
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Kiểm tra bắt buộc
+
             if (string.IsNullOrWhiteSpace(txtTitle.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên bài hát.");
@@ -60,7 +60,7 @@ namespace MusicApp
                 return;
             }
 
-            // Gán dữ liệu
+
             Title = txtTitle.Text.Trim();
             Artist = txtArtist.Text.Trim();
             Genre = txtGenre.Text.Trim();
@@ -68,8 +68,6 @@ namespace MusicApp
             ReleaseYear = (int)nudYear.Value;
             FilePath = txtFilePath.Text;
 
-            // Tính thời lượng (tạm thời để 0, hoặc dùng WMPLib để lấy sau)
-            // Có thể thêm logic lấy Duration nếu cần
 
             DialogResult = DialogResult.OK;
             Close();

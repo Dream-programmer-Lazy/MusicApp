@@ -9,11 +9,10 @@ namespace MusicApp
 {
     public class SongDAL
     {
-        // 🔒 Chuỗi kết nối đến SQL Server
-        // 💡 Đảm bảo bạn đã tạo CSDL tên là "MusicPlayerDB"
+
         private string connectionString = @"Data Source=LAPTOP-6505U094;Initial Catalog=MusicPlayerDB;Integrated Security=True;";
 
-        // 📥 Lấy toàn bộ bài hát
+
         public List<Song> GetAllSongs()
         {
             List<Song> songs = new List<Song>();
@@ -50,7 +49,6 @@ namespace MusicApp
             return songs;
         }
 
-        // ➕ Thêm bài hát mới
         public void AddSong(Song song)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -74,7 +72,6 @@ namespace MusicApp
             }
         }
 
-        // 🔍 Tìm kiếm bài hát
         public List<Song> SearchSongs(string keyword)
         {
             List<Song> songs = new List<Song>();
